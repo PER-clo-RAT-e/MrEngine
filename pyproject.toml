@@ -14,14 +14,16 @@ authors = [
 ]
 
 dependencies = [
+    "blessed>=1.49.0",
 ]
 
 [project.scripts]
 mr-sweep = "game.main:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/"]
+packages = ["src/game"]
 
 
 [tool.hatch.envs.default]
+installer="uv"
 path=".venv"
