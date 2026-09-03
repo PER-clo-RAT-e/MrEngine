@@ -1,0 +1,27 @@
+#:tombi schema.strict = false
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "MrSweep"
+version = "0.0-00"
+description = "Simple minesweeper"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "PER-clo-RAT-e" }
+]
+
+dependencies = [
+]
+
+[project.scripts]
+mr-sweep = "game.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/"]
+
+
+[tool.hatch.envs.default]
+path=".venv"
