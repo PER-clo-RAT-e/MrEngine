@@ -1,7 +1,6 @@
 class Cell:
     def __init__(self, is_mine: bool=False):
         self.is_mine = is_mine
-        self.hidden = True
         self.flagged = False
         self.revealed = False
         self.near = 0
@@ -14,54 +13,60 @@ class Cell:
             if n.is_mine:
                 self.near += 1
 
-    def dig(self, revealed=0) -> int:
-        result = 0
-        if self.hidden or not self.flagged:
-            if self.revealed:
+    def dig(self, recursion_am=0) -> tuple[int, list]:
+        dug = 0
+        staged = []
+        if not self.revealed:
+            if self.is_mine:
+                return (-1, staged)
+
+            if self.near == 0:
+                for n in self.neighbors:
+                    if not n.revealed and not n.flagged:
+                        if recursion_am > 9:
+                            staged.append(n)
+                            continue
+                        res, st = n.dig(recursion_am + 1)
+                        if len(st) > 0:
+                            staged.extend(st)
+                        if res == -1:
+                            return (-1, staged)
+                        else:
+                            dug += res
+            else:
                 flagged = 0
                 for n in self.neighbors:
                     if n.flagged:
                         flagged += 1
-
                 if flagged >= self.near:
                     for n in self.neighbors:
                         if not n.revealed and not n.flagged:
-                            n.dig()
-
-
-            else:
-                self.revealed = True
-                if self.is_mine:
-                    result = -1
-                elif self.near == 0:
-                    result = 1
-                    for n in self.neighbors:
-                        if not n.revealed:
-                            self.hidden = False
-                            res = n.dig(revealed + 1)
+                            if recursion_am > 200:
+                                staged.append(n)
+                                continue
+                            res, st = n.dig(recursion_am + 1)
+                            if len(st) > 0:
+                                staged.extend(st)
                             if res == -1:
-                                return -1
+                                return (-1, staged)
                             else:
-                                result += res
-                else:
-                    result = 1
+                                dug += res
+
+            self.revealed = True
+
+        return (dug, staged)
 
 
-        self.hidden = False
-        return result
+
 
     def flag(self):
         if not self.revealed:
             self.flagged = not self.flagged
-            self.hidden = not self.hidden
-
-            if self.flagged:
-                return 1
 
     def __str__(self) -> str:
-        if not self.hidden:
-            if self.flagged:
-                return "!"
+        if self.flagged:
+            return "!"
+        elif self.revealed:
             if self.is_mine:
                 return "#"
             elif self.near > 0:
