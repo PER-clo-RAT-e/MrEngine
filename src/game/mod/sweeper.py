@@ -38,6 +38,7 @@ class Field:
                 for _ in range(self.height)]
             for _ in range(self.depth)
         ]
+        self.busy = False
         self.pointer = FieldPointer(dimensions)
         self.term = Terminal()
         self.state = "playing"
@@ -77,7 +78,7 @@ class Field:
             for z in range(self.depth):
                 for y in range(self.height):
                     for x in range(self.width):
-                        if uniform(0, 1) <= probability and not (cell := self.field[z][y][x]).is_mine and x != 0 and y != 0 and z!=0:
+                        if uniform(0, 1) <= probability and not (cell := self.field[z][y][x]).is_mine and (x != 0 and y != 0 and z!=1):
                             cell.is_mine = True
 
                             amount -= 1
@@ -167,6 +168,7 @@ class Field:
                     case "d":
                         staged = deque([self.field[pos_z][pos_y][pos_x]])
                         dug = 0
+                        self.busy = True
                         while len(staged) != 0:
                             dg, st = staged[0].dig()
                             staged.popleft()
@@ -174,6 +176,7 @@ class Field:
                             dug += dg
                             staged.extend(st)
 
+                        self.busy = False
                         if dug == -1:
                             self.state = "lost"
                         else:
@@ -229,14 +232,15 @@ class Field:
 
         if self.info_requested:
             cell = self.field[cur_z][cur_y][cur_x]
-            print(self.term.move_xy(170, 3) + f"Is Mine: {int(cell.is_mine)}")
-            print(self.term.move_right(170) + f"Flagged: {int(cell.flagged)}")
-            print(self.term.move_right(170) + f"Pos: {cur_x}:{cur_y}:{cur_z}")
-            print(self.term.move_right(170) + f"Mine Sum: {sum([c.is_mine for c in cell.neighbors])}")
-            print(self.term.move_right(170) + f"Near Mines: {cell.near}")
-            print(self.term.move_right(170) + f"Flag Sum: {sum([int(c.flagged) for c in cell.neighbors])}")
+            print(self.term.move_xy(168, 3) + f"Is Mine: {int(cell.is_mine)}")
+            print(self.term.move_right(168) + f"Flagged: {int(cell.flagged)}")
+            print(self.term.move_right(168) + f"Pos: {cur_x}:{cur_y}:{cur_z}")
+            print(self.term.move_right(168) + f"Mine Sum: {sum([c.is_mine for c in cell.neighbors])}")
+            print(self.term.move_right(168) + f"Near Mines: {cell.near}")
+            print(self.term.move_right(168) + f"Flag Sum: {sum([int(c.flagged) for c in cell.neighbors])}")
 
-            print(self.term.move_down(1) + self.term.move_right(170) + f"Key Pressed: {self.key.name if self.key is not None else self.key}             ")
+            print(self.term.move_down(1) + self.term.move_right(168) + f"Key Pressed: {self.key.name if self.key is not None else self.key}             ")
+            print(self.term.move_right(168) + f"Is Busy: {self.busy}")
 
         for _depth in range(self.depth):
             if _depth == cur_z:

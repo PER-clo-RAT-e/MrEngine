@@ -8,7 +8,7 @@ def main():
         term = Terminal()
         with term.cbreak(), term.hidden_cursor():
             ready = False
-            dimensions = [40, 40, 1]
+            dimensions = [40, 40, 10]
             mines = 220
             percent = 20
             x_max = 55
@@ -18,7 +18,13 @@ def main():
             while not ready:
                 print(term.home + term.clear + term.center("Press Q to exit and H for help.") + term.home + term.move_down(term.height // 2 - 6))
                 if help_requested:
-                    print(term.center("HELP PAGE LOOOL"))
+                    print(term.center("HELP PAGE"))
+                    print("\n\n\n")
+                    print(term.center("       H   —  Call this Menu              "))
+                    print(term.center("       Q   —  Quit MrSweep.               "))
+                    print(term.center("       I   —  Debug Mode.                 "))
+                    print(term.center("     ↓↑/←→ —  Move cursor along the borad."))
+                    print(term.center("Shift + ↓↑ —  Change the Layer.           "))
                 else:
 
                     print("             ┌ Width ─┐")

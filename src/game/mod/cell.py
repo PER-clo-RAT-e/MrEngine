@@ -16,7 +16,27 @@ class Cell:
     def dig(self, recursion_am=0) -> tuple[int, list]:
         dug = 0
         staged = []
-        if not self.revealed:
+        if self.revealed:
+            flagged = 0
+            for n in self.neighbors:
+                if n.flagged:
+                    flagged += 1
+            if flagged >= self.near:
+                for n in self.neighbors:
+                    if not n.flagged and not n.revealed:
+                        if recursion_am > 200:
+                            staged.append(n)
+                            continue
+                        res, st = n.dig(recursion_am + 1)
+                        if len(st) > 0:
+                            staged.extend(st)
+                        if res == -1:
+                            return (-1, staged)
+                        else:
+                            dug += res
+            else:
+                return (-1, staged)
+        else:
             if self.is_mine:
                 return (-1, staged)
 
@@ -33,24 +53,6 @@ class Cell:
                             return (-1, staged)
                         else:
                             dug += res
-            else:
-                flagged = 0
-                for n in self.neighbors:
-                    if n.flagged:
-                        flagged += 1
-                if flagged >= self.near:
-                    for n in self.neighbors:
-                        if not n.revealed and not n.flagged:
-                            if recursion_am > 200:
-                                staged.append(n)
-                                continue
-                            res, st = n.dig(recursion_am + 1)
-                            if len(st) > 0:
-                                staged.extend(st)
-                            if res == -1:
-                                return (-1, staged)
-                            else:
-                                dug += res
 
             self.revealed = True
 
