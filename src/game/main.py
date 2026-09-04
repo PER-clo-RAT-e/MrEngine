@@ -1,3 +1,4 @@
+from threading import Thread
 from game.mod.sweeper import Field
 from blessed import Terminal
 from math import floor
@@ -15,6 +16,8 @@ def main():
             y_max = 45
             z_max = 10
             help_requested = False
+            digmode = 0
+            digmodes = ["Fast", "Medium", "Slow"]
             while not ready:
                 print(term.home + term.clear + term.center("Press Q to exit and H for help.") + term.home + term.move_down(term.height // 2 - 6))
                 if help_requested:
@@ -41,6 +44,10 @@ def main():
 
                     print("             ┌ Layers ┐")
                     print(f"    Sh↑/Sh↓  │{dimensions[2]:^8}│")
+                    print("             └────────┘")
+
+                    print("             ┌ DigMod ┐")
+                    print(f"       M     │{digmodes[digmode]:^8}│")
                     print("             └────────┘")
 
                     probability = mines / (dimensions[0] * dimensions[1])
@@ -90,17 +97,21 @@ def main():
                         mines = max(10 * dimensions[2], min(floor(dimensions[0] * dimensions[1] * dimensions[2] * percent // 100), mines + 1))
                     case "-":
                         mines = max(10 * dimensions[2], min(floor(dimensions[0] * dimensions[1] * dimensions[2] * percent // 100), mines - 1))
+                    case "m":
+                        digmode = 0 if digmode >= 2 else digmode + 1
                     case "q":
                         print("Exiting!")
                         return
 
 
 
-        field = Field(dimensions, mines)
+        field = Field(dimensions, mines, digmode)
 
         field.spawn()
         print("Starting the game")
-        field.listen()
+        listen_thread = Thread(target=field.listen)
+        listen_thread.start()
+        field.render()
     except KeyboardInterrupt:
         print("I'm afraid of Ctrl+C!")
 

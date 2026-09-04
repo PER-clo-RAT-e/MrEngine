@@ -1,6 +1,9 @@
+import time
+
 class Cell:
-    def __init__(self, is_mine: bool=False):
-        self.is_mine = is_mine
+    def __init__(self, timeout: float=0.0):
+        self.timeout = timeout
+        self.is_mine = False
         self.flagged = False
         self.revealed = False
         self.near = 0
@@ -37,6 +40,9 @@ class Cell:
             else:
                 return (0, staged)
         else:
+            if self.flagged:
+                return (0, staged)
+
             self.revealed = True
             if self.is_mine:
                 return (-1, staged)
@@ -57,6 +63,8 @@ class Cell:
                         else:
                             dug += res
 
+        if self.timeout != -1:
+            time.sleep(self.timeout)
 
         return (dug, staged)
 
