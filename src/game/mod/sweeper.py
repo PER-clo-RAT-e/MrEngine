@@ -46,6 +46,7 @@ class Field:
         self.request_restart = False
         self.colors = [self.term.cyan, self.term.green, self.term.lime, self.term.yellow, self.term.indianred, self.term.orangered, self.term.red, self.term.brown]
         self.empty_cells = self.width * self.height * self.depth - self.mines
+        self.dug = 0
         self.info_requested = False
         self.key = None
         self.run = True
@@ -176,6 +177,8 @@ class Field:
                             dug += dg
                             staged.extend(st)
 
+                        self.dug = dug
+
                         self.busy = False
                         if dug == -1:
                             self.state = "lost"
@@ -219,8 +222,8 @@ class Field:
                 if not (cell := self.field[cur_z][y][x]).revealed:
                     if cell.is_mine:
                         color = self.term.webmaroon
-                    elif self.depth == 1:
-                        color = self.colors[cell.near//3]
+                    elif self.depth > 1:
+                        color = self.colors[min(8, max(0, cell.near//3))]
                     else:
                         color = self.colors[cell.near]
 
@@ -241,6 +244,9 @@ class Field:
 
             print(self.term.move_down(1) + self.term.move_right(168) + f"Key Pressed: {self.key.name if self.key is not None else self.key}             ")
             print(self.term.move_right(168) + f"Is Busy: {self.busy}")
+
+            print(self.term.move_down(1) + self.term.move_right(168) + f"Dug: {self.dug}            ")
+            print(self.term.move_right(168) + f"Dimensions: {self.width}::{self.height}::{self.depth}")
 
         for _depth in range(self.depth):
             if _depth == cur_z:

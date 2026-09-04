@@ -35,10 +35,13 @@ class Cell:
                         else:
                             dug += res
             else:
-                return (-1, staged)
+                return (0, staged)
         else:
+            self.revealed = True
             if self.is_mine:
                 return (-1, staged)
+
+            dug += 1
 
             if self.near == 0:
                 for n in self.neighbors:
@@ -54,7 +57,6 @@ class Cell:
                         else:
                             dug += res
 
-            self.revealed = True
 
         return (dug, staged)
 
