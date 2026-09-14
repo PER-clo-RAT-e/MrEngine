@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "MrSweep"
-version = "0.0-00"
+version = "0.1-10"
 description = "Simple minesweeper"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -15,13 +15,17 @@ authors = [
 
 dependencies = [
     "blessed>=1.49.0",
+    "numpy>=2.4.6",
+    "pygame>=2.6.1",
+    "readchar>=4.2.2",
 ]
 
 [project.scripts]
-mr-sweep = "game.main:main"
+mr-sweep-old = "client.main_old:main"
+mr-sweep = "client.main:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/game"]
+packages = ["src/client"]
 
 
 [tool.hatch.envs.default]
