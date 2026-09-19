@@ -1,0 +1,58 @@
+# <#===  General  ===#>
+title       = "File Manager"
+version     = "0.1-##"
+
+[pre-init]
+
+
+# <#=== Interface ===#>
+[[components]]
+name        = "btn.exit"
+type        = "button"
+text        = "X"
+on_click    = "&menu.exit.full"
+dimensions  = "5|3"
+position    = "l_3|t_2"
+
+[[components]]
+name        = "label.description"
+type        = "label"
+text        = "Wlecome to The Explorer. You can Call Help by pressing H."
+on_click    = "&nothing"
+dimensions  = "11_cw|3"
+position    = "c_7|t_2"
+
+[[components]]
+name        = "label.current_file"
+type        = "label"
+text        = "&menu.explorer.curr_file"
+on_click    = "&nothing"
+dimensions  = "4_cw|3"
+position    = "c|t_5"
+
+[[components]]
+name        = "line.separate1"
+type        = "line"
+format      = "—"
+dimensions  = "2_cw|1"
+position    = "c|7"
+
+[[components]]
+type        = "y-canvas"
+on_click    = "&nothing"
+dimensions  = "4_cw|6_ch"
+position    = "c|c_6"
+
+[[components]]
+type        = "button"
+text        = "&{save//open}"
+on_click    = "&menu.explorer.file.{save//open}"
+dimensions  = "6|3"
+position    = "5_cw|2_b"
+
+[[components]]
+type        = "button"
+text        = "cancel"
+on_click    = "&menu.explorer.cancel"
+dimensions  = "8|3"
+position    = "13_cw|2_b"
