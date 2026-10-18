@@ -18,6 +18,10 @@ class BaseObject2D:
         self.width = dimensions[0]
         self.height = dimensions[1]
 
+    def _prepare_buffers(self) -> None:
+        self._brl_buffer = np.zeros([self.height, self.width])
+        self._txt_buffer = np.array([[' ' for _ in range(self.width // 2)] for _ in range(self.height // 4)], dtype=str)
+
     def _clip_n_copy(self,
         trgt_buff: np.ndarray,
         src_buff: np.ndarray,
@@ -36,5 +40,10 @@ class BaseObject2D:
         src_x1, src_x2 = max(0, -src_vb_lft), max(0, -src_vb_lft) + (trgt_x2 - trgt_x1)
         src_y1, src_y2 = max(0, -src_vb_tp), max(0, -src_vb_tp) + (trgt_y2 - trgt_y1)
 
-        if trgt_x1 <= trgt_x2 and trgt_y1 <= trgt_y2:
+        if trgt_x1 <= trgt_x2 or trgt_y1 <= trgt_y2:
             trgt_buff[trgt_y1:trgt_y2, trgt_x1:trgt_x2] = src_buff[src_y1:src_y2, src_x1:src_x2]
+
+    def draw(self, csl_vb: np.ndarray, csl_tb: np.ndarray) -> None:
+        self._clip_n_copy(csl_vb, self._brl_buffer, (self.x, self.y))
+
+        self._clip_n_copy(csl_tb, self._txt_buffer, (self.x//2, self.y//4))

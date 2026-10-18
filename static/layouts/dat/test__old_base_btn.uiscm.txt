@@ -1,0 +1,48 @@
+v0.1-10
+
+#! Exporting the component makes it visible for other modules.
+export component BaseButton {
+    default>>
+        (10, 20)     =>   position;
+        (32, 16)     => dimensions;
+        "Button"     =>       text;
+        (1, 1, 1, 1) =>     border;
+
+    my_custom_example>>
+        (-10, 21)    =>   position;
+        (30, -15)    => dimensions;
+        "Buttona"    =>       text;
+        (1, 0, 1, 0) =>     border;
+}
+
+#! Reassigning definitions is used when creating a custom object.
+ ! For instance, If I'm making the in-game screen and want to
+ ! make it to show up after the event IDLE and display the Modelbrot set animation.
+ ! Technically, It's just reassigning the functions draw and update.
+ ! Other functions should be declared as private as they're not using in game code.
+re.definition BaseButton in Python {
+    import numpy as np
+    from datetime import deltatime
+
+    class BaseButton2D:
+        def __init__(self, pos, dim, text, border):
+            self.position = pos
+            self.dimensions = dim
+            self.text = text
+            self.border = border
+            self.t_alive = deltatime(0.0)
+
+        def draw(self, vb: np.ndarray, tb: np.ndarray):
+            pass
+
+        def update(self, dtime):
+            self.t_alive += dtime
+            if self.t_alive > 10:
+                return "exp"
+            else:
+                return "ok"
+}
+
+#! Asserting the needed Python libraries used to tell the UI Manager
+ ! what libraries are used in this code and should be installed during runtime.
+assert libraries { numpy };

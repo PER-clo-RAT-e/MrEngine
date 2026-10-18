@@ -1,4 +1,4 @@
-# ---> Python
+# Python
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -6,6 +6,8 @@ __pycache__/
 
 # output folder
 out/
+
+customs/zed_editor/code_highlight/grammars/
 
 # C extensions
 *.so
@@ -218,3 +220,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+.obsidian/
+.zed/
+.zed/

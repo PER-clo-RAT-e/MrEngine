@@ -1,0 +1,1 @@
+Thanks to [Codeberg](https://codeberg.org) for safe and friendly home for this project.

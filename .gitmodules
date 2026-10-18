@@ -1,0 +1,9 @@
+[submodule "src/lsp/uiscm-server"]
+	path = src/lsp/uiscm-server
+	url = https://codeberg.org/PER-clo-RAT-e/uiscm-LSP-server
+[submodule "src/parsers/tree-sitter-uiscm"]
+	path = src/parsers/tree-sitter-uiscm
+	url = https://codeberg.org/PER-clo-RAT-e/tree-sitter-uiscm
+[submodule "src/parsers/tree-sitter-psprj"]
+	path = src/parsers/tree-sitter-psprj
+	url = https://codeberg.org/PER-clo-RAT-e/tree-sitter-psprj

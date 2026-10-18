@@ -5,7 +5,7 @@ import numpy as np
 from dataclasses import dataclass
 from client.manager.event import ApplicationEvent, EventManager
 from client.manager.mod.manager import BaseManager
-from client.manager.mod.objects.ui.button import BaseButton
+from client.manager.mod.objects.ui.button import BaseButton2D
 from client.manager.mod.response import BaseManagerResponse
 from client.manager.mod.state import BaseError, Status
 
@@ -17,7 +17,7 @@ class GraphicManagerError(BaseError):
 class GraphicManagerResponse(BaseManagerResponse):
     error_message:  GraphicManagerError|None = None
 
-type drawableClass = BaseButton
+type drawableClass = BaseButton2D
 
 class GraphicManager(BaseManager):
     def __init__(self, event_manager: EventManager) -> None:
@@ -89,7 +89,7 @@ class GraphicManager(BaseManager):
         src_x1, src_x2 = max(0, -src_vb_lft), max(0, -src_vb_lft) + (trgt_x2 - trgt_x1)
         src_y1, src_y2 = max(0, -src_vb_tp), max(0, -src_vb_tp) + (trgt_y2 - trgt_y1)
 
-        if trgt_x1 < trgt_x2 and trgt_y1 < trgt_y2:
+        if trgt_x1 <= trgt_x2 or trgt_y1 <= trgt_y2:
             trgt_buff[trgt_y1:trgt_y2, trgt_x1:trgt_x2] = src_buff[src_y1:src_y2, src_x1:src_x2]
 
     def _cycle(self):
@@ -104,7 +104,6 @@ class GraphicManager(BaseManager):
 
 
             new_txt_buff = self._braille_to_txt(self._brl_buffer)
-            #self._clip_nd_cp_bffrs(self._txt_buffer, new_txt_buff)
 
             mask = self._txt_buffer != ' '
             new_txt_buff[mask] = self._txt_buffer[mask]

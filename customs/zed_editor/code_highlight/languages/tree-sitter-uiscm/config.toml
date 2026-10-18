@@ -1,0 +1,4 @@
+name = "MrSweepUI"
+grammar = "uiscm"
+path_suffixes = ["uiscm"]
+line_comments = ["!! "]

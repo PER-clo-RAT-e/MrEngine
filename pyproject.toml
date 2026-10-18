@@ -4,9 +4,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "MrSweep"
+name = "MrEngine"
 version = "0.1-10"
-description = "Simple minesweeper"
+description = "Engine for my (and not only mine) terminal games"
 readme = "README.md"
 requires-python = ">=3.12"
 authors = [
@@ -17,7 +17,11 @@ dependencies = [
     "blessed>=1.49.0",
     "numpy>=2.4.6",
     "pygame>=2.6.1",
+    "pygls>=2.1.1",
     "readchar>=4.2.2",
+    "tree-sitter>=0.26.0",
+    "tree-sitter-psprj",
+    "tree-sitter-uiscm",
 ]
 
 [project.scripts]
@@ -32,3 +36,13 @@ packages = ["src/client"]
 [tool.hatch.envs.default]
 installer="uv"
 path=".venv"
+
+[tool.uv.workspace]
+members = [
+    "src/parsers/tree-sitter-uiscm",
+    "src/parsers/tree-sitter-psprj",
+]
+
+[tool.uv.sources]
+tree-sitter-uiscm = { workspace = true }
+tree-sitter-psprj = { workspace = true }

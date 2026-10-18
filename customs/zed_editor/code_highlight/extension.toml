@@ -1,0 +1,20 @@
+id = "lang-highlights"
+name = "Syntax Highlighter"
+version = "0.0.1"
+schema_version = 1
+authors = ["Illia Petrov <illiapetrov1092@gmail.com>"]
+description = "Syntax Highlight for my languages used in MrSweep"
+repository = "https://codeberg.org/PER-clo-RAT-e/MrSweep/src/branch/dev/customs/zed_editor/code_highlight"
+
+languages = [
+    "languages/tree-sitter-psprj",
+    "languages/tree/sitter-uiscm"
+]
+
+[grammars.psprj]
+repository = "https://codeberg.org/PER-clo-RAT-e/tree-sitter-psprj"
+rev = "9e36b0b4d35cccd6f1ed08c768e474229a72de86"
+
+[grammars.uiscm]
+repository = "https://codeberg.org/PER-clo-RAT-e/tree-sitter-uiscm"
+rev = "ec888ac807851f58ae9d409ef5381bb8a8374436"

@@ -12,6 +12,7 @@ class MemoriserStatus(Enum):
 
 class MemoriserError(BaseError):
     NOT_FOUND = "Object {} is not found."
+    OVERWRITE = "Object {} will be overwritten."
 
 
 @dataclass
@@ -45,5 +46,15 @@ class Memoriser:
                 element
             )
 
-    def add(self, name, element):
+    def add(self, name, element, overwrite_flag=False) -> MemoriserResponse:
+        if name in self.mem and not overwrite_flag:
+            return MemoriserResponse(
+                MemoriserStatus.ERROR,
+                None,
+                MemoriserError.OVERWRITE
+            )
         self.mem[name] = element
+        return MemoriserResponse(
+            MemoriserStatus.SUCCESS,
+            self.mem[name]
+        )

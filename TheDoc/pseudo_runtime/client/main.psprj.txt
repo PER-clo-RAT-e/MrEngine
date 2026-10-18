@@ -1,0 +1,48 @@
+===> Beforemath
+
+[main.py]             man.init      > EventManager
+
+[main.py]             man.init      > LogManager     (reqMan: EventManager)
+[manager/log.py]      evnt.sub      > EventManager.{ DEBUG, INFO, WARN, ERROR, WTF }
+[main.py]             man.demonise  > LogManager
+
+[main.py]             man.init      > InputManager   (reqMan: EventManager)
+[manager/input.py]    lib.use       > { pygame.joystick, readchar }
+[manager/input.py]    evnt.add      > { JYDEVCON, JOYDEVDISCON, JOYACTION_#, KEYPRESSED_# }
+[manager/input.py]    evnt.sub      > { JYDEVCON, JOYDEVDISCON } as { CreateListener, DeleteListener }
+[main.py]             man.demonise  > InputManager
+
+[main.py]             man.init      > FieldManager   (reqMan: EventManager)
+[manager/field.py]    lib.use       > { numpy }
+[manager/field.py]    evnt.add      > { FIELDUPDATED }
+[manager/field.py]    evnt.sub      > { KEYPRESSED_#, JOYACTION_# }
+[main.py]             man.demonise  > FieldManager
+
+[main.py]             man.init      > UIManager      (reqMan: EventManager)
+[manager/ui.py]       evnt.add      > { NEWMSG }
+[manager/ui.py]       evnt.sub      > { NEWMSG, KEYPRESSED_#, JOYACTION_#, FIELDUPDATED } as { UIManager.registerLife(Message.new), ReactToKeyPress, ReactToJoyAction, evnt.pub>UIUPDATED }
+[main.py]             man.demonise  > UIManager
+
+[main.py]             man.init      > GraphicManager (reqMan: EventManager)
+[manager/graphic.py]  evnt.add      > { UIUPDATED }
+[manager/graphic.py]  evnt.sub      > { UIUPDATED } as { UpdateConsole }
+[main.py]             man.demonise  > GraphicManager
+
+
+===> Aftermath
+man.demonise > {
+Python
+    def demonise(self, args=[]):
+        thread = Thread(target=self.cycle, args=args, daemon=True)
+        thread.start()
+
+        return thread
+
+}
+
+UIManager.registerLife > {
+Python
+    def register_life(self, life: AliveBaseObjectUI):
+        self.ui['front'][life.id] = life.update
+
+}

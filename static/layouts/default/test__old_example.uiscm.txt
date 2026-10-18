@@ -1,0 +1,65 @@
+#! Versioning is required to import the UIScheme file to game.
+ ! It's meant for game to know what Version compability to use.
+v0.1-10
+
+#! `using` imports file data from path.
+ ! `&` in `using` case is app memory, provided by Memoriser Manager.
+using static.layouts.dat.base_btn.BaseButton;
+using notdoneyet.{ BaseRadioInp, BaseCheckBoxInp, BaseLine, BaseCanvas, BaseLabel, BaseText };
+using &.shared_env.{ sconsole_var, app_var };
+
+#! link just renames imported modules for ease of use.
+link console_var as cv;
+link app_var     as av;
+
+#! It is possible to initialise component, providing every needed parameter.
+init component BaseLabel as Label::000 {
+    (0, -30)  => position;
+    "MrSweep" =>    title;
+    True      =>  is_bold;
+}
+
+#! Or just initiate wiht default preset (if it exists. (Ideally should)).
+ ! Also possible reassigning the parameters. used with re.parameter syntax.
+init component BaseButton as Button::000 with default;
+re.text Button::000 to "Start the Game";
+re.position Button::000 to (0, -20);
+
+init component BaseButton as Button::001 {
+    (0, 0)       =>   position;
+    (32, 16)     => dimensions;
+    "Settings"   =>       text;
+    (1, 1, 1, 1) =>     border;
+}
+
+#! Grouplink is used generally for RadioInputs to group them and properly use them.
+ ! Grouplink can be stacked.
+ ! Example use `<<grouplink-anyname>>`
+<<grouplink-agreements>>
+init component BaseCheckBoxInp as CBInp::000 with default;
+re.position CBInp::000 to (0, cv.width/2-2);
+
+init component BaseText as Text::000 {
+    (4, cv.width/2-2)          => position;
+    "I agree to Terms of Use." =>     text;
+    True                       => required;
+}
+
+init component BaseCheckBoxInp as CBInp::001 with default;
+re.position CBInp::001 to (0, cv.width/2-1);
+
+init component BaseText as Text::001 {
+    (4, cv.width/2-1)           => position;
+    "I agree to Privacy Policy" =>     text;
+    True                        => required;
+}
+
+init component BaseCheckBoxInp as CBInp::002 with default;
+re.position CBInp::002 to (0, cv.width/2);
+
+init component BaseText as Text::002 {
+    (4, cv.width/2)              => position;
+    "I agree to use Arch Linux." =>     text;
+    True                         => required;
+}
+<<grouplink-agreements>>

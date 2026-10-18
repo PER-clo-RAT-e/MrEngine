@@ -1,0 +1,4 @@
+name = "PseudoProj"
+grammar = "psprj"
+path_suffixes = ["psprj", "pp"]
+line_comments = ["===> "]

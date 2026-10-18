@@ -1,0 +1,41 @@
+#!/bin/sh
+# Code assumes you're launching it somewhere in the project folder and project folder is named as $PROJ_NAME.
+
+START_DIR="$PWD"
+PROJ_NAME="minesweeper"
+EDITOR_FOLDER="zed_editor"
+
+case "$PWD/" in
+    *"/$PROJ_NAME/"*)
+        cd "${PWD%%/$PROJ_NAME*}/$PROJ_NAME"
+        ;;
+    *)
+        echo "[ ¡ ] Script have not found the \`$PROJ_NAME\` folder in parents."
+        exit 1
+        ;;
+esac
+
+if [ $# -eq 0 ]; then
+    echo "[ ¡ ] There is no command provided."
+    echo "[   ]         { generate, test }"
+    exit 1
+fi
+USER_COMMAND=$1
+
+LANGUAGES_MAIN_DIR="${PWD}/customs/$EDITOR_FOLDER/code_highlight/languages"
+
+
+for dir in "$LANGUAGES_MAIN_DIR"/*/; do
+    cd "$dir"
+
+    echo "[ + ] Affecting the \`$dir\` directory."
+
+    tree-sitter generate
+
+    cd "${LANGUAGES_MAIN_DIR}"
+done
+
+
+echo "[ + ] Exiting."
+
+cd "$START_DIR"

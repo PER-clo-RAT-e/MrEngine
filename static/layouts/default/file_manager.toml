@@ -2,7 +2,7 @@
 title       = "File Manager"
 version     = "0.1-##"
 
-[pre-init]
+[env]
 
 
 # <#=== Interface ===#>

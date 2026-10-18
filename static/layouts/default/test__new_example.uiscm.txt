@@ -1,0 +1,46 @@
+#src.static.layouts.default.test__new_example
+
+#  This is oneline comment.
+#! This is a
+   multi-line comment
+ ! that ends on this line.
+
+
+#! `using` imports file data from path
+   or imports any module with that name
+   that is installed in env folder
+   `&` in `using` case is app memory,
+ ! provided by Memory Manager.
+using static.layouts.dat.test__new_btnbase_example.BaseButton as bBtn;
+using notdoneyet.{
+    BaseRadioInp as bRadio,
+    BaseCheckBoxInp as bCBox,
+    BaseLine as bLine,
+    BaseCanvas as bCanvas,
+};
+using &.project.{
+    vars.{
+        Engine.Name,
+        Player.Name,
+    },
+    action.Require,
+    models.Window,
+};
+
+
+Window.ruleset(
+    ShowDecorationsPad=False,
+    ShowControls=False,
+    ShowModMenu=False,
+);
+
+#! There are some tricky data types in uiscm that
+   are designed for ease of use.
+   `dim` means it stores 2 integers that can be acceseed via:
+       variable.x
+       variable.y
+
+   Any math operation in dim data type results in the same data type
+   with changed value of both integers (in case of float value, it's floored).
+ ! Values cannot be changed separately
+var dim window_size = Window.dimensions.text_buffer;
